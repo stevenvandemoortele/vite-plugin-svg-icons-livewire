@@ -124,7 +124,6 @@ export async function createModuleCode(
     .replace(new RegExp(xmlnsLink, 'g'), '')
 
   const code = `
-       if (typeof window !== 'undefined') {
          function loadSvg() {
            var body = document.body;
            var svgDom = document.getElementById('${options.customDomId}');
@@ -146,7 +145,7 @@ export async function createModuleCode(
          } else {
            loadSvg()
          }
-      }
+        document.addEventListener('livewire:navigated', loadSvg);
         `
   return {
     code: `${code}\nexport default {}`,
