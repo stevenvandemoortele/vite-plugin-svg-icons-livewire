@@ -124,7 +124,6 @@ export async function createModuleCode(
     .replace(new RegExp(xmlnsLink, 'g'), '')
 
   const code = `
-       if (typeof window !== 'undefined') {
          function loadSvg() {
            var body = document.body;
            var svgDom = document.getElementById('${options.customDomId}');
@@ -142,10 +141,12 @@ export async function createModuleCode(
          }
          if(document.readyState === 'loading') {
            document.addEventListener('DOMContentLoaded', loadSvg);
+           document.addEventListener('livewire:navigated', loadSvg);
          } else {
-           loadSvg()
+
+           loadSvg();
+           document.addEventListener('livewire:navigated', loadSvg);
          }
-      }
         `
   return {
     code: `${code}\nexport default {}`,
